@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title> HACKER TERMINAL v5.0 - RESPONSIVE 🔒</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        height: 100vh;
+        background: #0a0a23;
+        background-image: 
+            radial-gradient(circle at 20% 80%, rgba(120,119,198,0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(120,119,198,0.3) 0%, transparent 50%),
+            radial-gradient(circle at 40% 40%, rgba(120,119,198,0.2) 0%, transparent 50%);
+        color: #00f5ff;
+        font-family: 'Rajdhani', 'Orbitron', monospace;
+        overflow: hidden;
+        position: relative;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    /* RESPONSIVE NEURAL LINES */
+    .neural-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .neural-line {
+        position: absolute;
+        height: 1.5px;
+        background: linear-gradient(90deg, transparent, #00f5ff, transparent);
+        animation: neuralPulse 4s linear infinite;
+    }
+
+    /* RESPONSIVE TERMINAL */
+    .terminal {
+        width: 92%;
+        max-width: 900px;
+        height: clamp(75vh, 85vh, 90vh);
+        max-height: 700px;
+        margin: clamp(2vh, 5vh, 8vh) auto;
+        background: linear-gradient(145deg, rgba(10,10,35,0.95), rgba(20,20,60,0.9));
+        border: 3px solid transparent;
+        background-clip: padding-box;
+        border-image: linear-gradient(45deg, #00f5ff, #0099cc, #00f5ff) 1;
+        border-radius: 25px;
+        padding: clamp(20px, 4vw, 40px);
+        position: relative;
+        backdrop-filter: blur(25px);
+        animation: neuralBreath 5s ease-in-out infinite;
+        box-shadow: 
+            0 0 80px rgba(0,245,255,0.4),
+            inset 0 0 80px rgba(0,245,255,0.08);
+        z-index: 10;
+        overflow: hidden;
+    }
+
+    /* RESPONSIVE HEADER */
+    .header-display {
+        text-align: center;
+        margin-bottom: clamp(20px, 3vw, 35px);
+    }
+
+    .system-title {
+        font-size: clamp(1.6rem, 5vw, 2.4rem);
+        font-weight: 900;
+        letter-spacing: clamp(3px, 0.5vw, 8px);
+        margin-bottom: clamp(5px, 1vw, 10px);
+        position: relative;
+        display: inline-block;
+    }
+
+    .system-title::before,
+    .system-title::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, #00f5ff, transparent);
+        z-index: -1;
+    }
+
+    .system-title::before { 
+        left: -100%; 
+        animation: scanLeft 3s linear infinite; 
+    }
+
+    .system-title::after { 
+        right: -100%; 
+        animation: scanRight 3s linear infinite reverse; 
+    }
+
+    .security-level {
+        font-size: clamp(11px, 2vw, 14px);
+        opacity: 0.8;
+        letter-spacing: clamp(1px, 0.3vw, 3px);
+        animation: securityPulse 2s infinite;
+    }
+
+    /* RESPONSIVE DATA PANELS */
+    .data-panels {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: clamp(10px, 2vw, 20px);
+        margin-bottom: clamp(20px, 3vw, 30px);
+    }
+
+    .panel {
+        background: rgba(0,20,40,0.6);
+        border: 1px solid rgba(0,245,255,0.3);
+        border-radius: 15px;
+        padding: clamp(12px, 2vw, 20px);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s ease;
+    }
+
+    .panel::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0,245,255,0.1), transparent);
+        transition: left 0.8s;
+    }
+
+    .panel:hover::before { left: 100%; }
+
+    .panel-title {
+        font-size: clamp(9px, 1.5vw, 12px);
+        opacity: 0.7;
+        margin-bottom: clamp(4px, 0.8vw, 8px);
+        letter-spacing: 1.5px;
+    }
+
+    .panel-value {
+        font-size: clamp(14px, 3vw, 20px);
+        font-weight: 700;
+        color: #00f5ff;
+    }
+
+    /* RESPONSIVE OUTPUT */
+    .output {
+        min-height: clamp(180px, 30vh, 250px);
+        max-height: clamp(35vh, 50vh, 50vh);
+        margin-bottom: clamp(20px, 3vw, 30px);
+        white-space: pre-line;
+        font-size: clamp(13px, 2.2vw, 16px);
+        line-height: 1.6;
+        overflow-y: auto;
+        padding: clamp(15px, 2.5vw, 25px);
+        background: rgba(0,15,35,0.85);
+        border: 2px solid rgba(0,245,255,0.25);
+        border-radius: 18px;
+        position: relative;
+        scrollbar-width: none;
+        box-shadow: inset 0 0 30px rgba(0,245,255,0.05);
+    }
+
+    .output::-webkit-scrollbar { 
+        width: 4px; 
+    }
+
+    .output::-webkit-scrollbar-track {
+        background: rgba(0,20,40,0.5);
+    }
+
+    .output::-webkit-scrollbar-thumb {
+        background: rgba(0,245,255,0.4);
+        border-radius: 2px;
+    }
+
+    /* RESPONSIVE INPUT */
+    .command-input {
+        background: rgba(0,10,30,0.9);
+        border: 2px solid transparent;
+        background-clip: padding-box;
+        border-image: linear-gradient(45deg, #00f5ff, #0099cc) 1;
+        border-radius: 20px;
+        padding: clamp(15px, 2.5vw, 22px) clamp(18px, 3vw, 25px);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s ease;
+    }
+
+    .command-input::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0,245,255,0.15), transparent);
+        transition: left 0.7s;
+    }
+
+    .command-input:focus-within::before {
+        left: 100%;
+        animation: inputScan 1s infinite;
+    }
+
+    .prompt {
+        margin-right: clamp(12px, 2vw, 20px);
+        font-weight: 700;
+        font-size: clamp(14px, 2.5vw, 18px);
+        text-shadow: 0 0 20px #00f5ff;
+        animation: neuralWave 3s infinite;
+        white-space: nowrap;
+    }
+
+    input {
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #00f5ff;
+        font-family: inherit;
+        font-size: clamp(14px, 2.5vw, 18px);
+        width: 100%;
+        caret-color: #00f5ff;
+        letter-spacing: clamp(1px, 0.2vw, 1.5px);
+    }
+
+    input::placeholder {
+        color: rgba(0,245,255,0.5);
+        letter-spacing: clamp(0.5px, 0.1vw, 1px);
+    }
+
+    /* TOUCH FRIENDLY */
+    input {
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+        padding: 4px 0;
+    }
+
+    /* ALERTS */
+    .error { 
+        color: #ff6b9d !important; 
+        text-shadow: 0 0 20px #ff6b9d !important;
+        animation: neuralShake 0.7s ease-in-out;
+    }
+    
+    .success { 
+        color: #00f5ff !important; 
+        text-shadow: 0 0 35px #00f5ff !important;
+        animation: neuralGlow 1.2s ease-in-out infinite;
+    }
+
+    /* ANIMATIONS */
+    @keyframes neuralPulse {
+        0%, 100% { width: 0px; opacity: 0; }
+        50% { width: clamp(100px, 20vw, 200px); opacity: 1; }
+    }
+
+    @keyframes scanLeft {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+
+    @keyframes scanRight {
+        0% { right: -100%; }
+        100% { right: 100%; }
+    }
+
+    @keyframes neuralBreath {
+        0%, 100% { 
+            box-shadow: 0 0 80px rgba(0,245,255,0.4), inset 0 0 80px rgba(0,245,255,0.08);
+            transform: scale(1);
+        }
+        50% { 
+            box-shadow: 0 0 120px rgba(0,245,255,0.7), inset 0 0 120px rgba(0,245,255,0.15);
+            transform: scale(1.01);
+        }
+    }
+
+    @keyframes securityPulse {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+    }
+
+    @keyframes neuralWave {
+        0%, 100% { filter: drop-shadow(0 0 15px #00f5ff); }
+        50% { filter: drop-shadow(0 0 30px #00f5ff) hue-rotate(180deg); }
+    }
+
+    @keyframes inputScan {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+
+    @keyframes neuralShake {
+        0%, 100% { transform: translateX(0); }
+        20% { transform: translateX(-10px); }
+        40% { transform: translateX(10px); }
+        60% { transform: translateX(-5px); }
+        80% { transform: translateX(5px); }
+    }
+
+    @keyframes neuralGlow {
+        0%, 100% { text-shadow: 0 0 20px #00f5ff; }
+        50% { text-shadow: 0 0 40px #00f5ff, 0 0 60px #00f5ff; }
+    }
+
+    /* MOBILE OPTIMIZATIONS */
+    @media (max-width: 480px) {
+        .terminal { 
+            width: 96%;
+            height: 92vh;
+            margin: 2vh auto;
+            padding: 20px;
+            border-radius: 20px;
+        }
+        
+        .data-panels {
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .prompt {
+            max-width: 35%;
+        }
+        
+        input {
+            font-size: 16px !important;
+        }
+    }
+
+    @media (max-width: 768px) and (min-width: 481px) {
+        .terminal { 
+            width: 94%;
+            height: 90vh;
+            margin: 3vh auto;
+            padding: 25px;
+        }
+        
+        .data-panels {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (hover: none) {
+        .panel:hover::before { left: 0; }
+    }
+
+    /* KEYBOARD VISIBILITY FIX */
+    @media (max-height: 500px) {
+        .terminal {
+            height: 95vh;
+            margin: 2.5vh auto;
+            padding: 15px;
+        }
+        
+        .output {
+            max-height: 30vh;
+        }
+    }
+</style>
+</head>
+
+<body>
+    <!-- NEURAL NETWORK -->
+    <div class="neural-bg" id="neural"></div>
+
+    <!-- TERMINAL -->
+    <div class="terminal">
+        <!-- HEADER -->
+        <div class="header-display">
+            <div class="system-title">NEURAL ACCESS TERMINAL</div>
+            <div class="security-level">QUANTUM NEURAL INTERFACE | v5.0</div>
+        </div>
+
+        <!-- DATA PANELS -->
+        <div class="data-panels">
+            <div class="panel">
+                <div class="panel-title">NEURAL SYNC</div>
+                <div class="panel-value">100%</div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">FIREWALL</div>
+                <div class="panel-value">OFFLINE</div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">AUTH LEVEL</div>
+                <div class="panel-value">10/10</div>
+            </div>
+            <div class="panel">
+                <div class="panel-title">PROTOCOL</div>
+                <div class="panel-value">NEURAL</div>
+            </div>
+        </div>
+
+        <!-- OUTPUT -->
+        <div class="output" id="output">
+<span style="color: #0099cc;">[NEURAL]</span> Initializing synaptic network...
+<span style="color: #0099cc;">[NEURAL]</span> Quantum synapse established...
+<span style="color: #00f5ff;">[CORE]</span> Neural core online - 100% coherence
+<span style="color: #00f5ff;">[AUTH]</span> Executive authorization required...
+        </div>
+
+        <!-- COMMAND INPUT -->
+        <div class="command-input" tabindex="-1">
+            <span class="prompt">NEURAL[~]#</span>
+            <input type="password" id="password" autofocus placeholder="EXECUTIVE AUTH CODE">
+        </div>
+    </div>
+
+    <script>
+        const correctPassword = "915512";
+        const redirectURL = "https://example.com";
+
+        const input = document.getElementById("password");
+        const output = document.getElementById("output");
+        const terminal = document.querySelector(".terminal");
+        const neuralBg = document.getElementById("neural");
+
+        // TOUCH FRIENDLY INPUT
+        input.addEventListener("focus", function() {
+            if ('virtualKeyboard' in navigator) {
+                navigator.virtualKeyboard.iframe = document.querySelector('.terminal');
+            }
+        });
+
+        // RESPONSIVE NEURAL LINES
+        function createNeuralLine() {
+            const line = document.createElement('div');
+            line.className = 'neural-line';
+            line.style.top = Math.random() * 100 + '%';
+            line.style.left = Math.random() * 100 + '%';
+            line.style.width = Math.min(Math.random() * 300 + 100, window.innerWidth * 0.6) + 'px';
+            line.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            line.style.animationDelay = Math.random() * -4 + 's';
+            neuralBg.appendChild(line);
+            setTimeout(() => line.remove(), 8000);
+        }
+
+        // INPUT HANDLER (KEYBOARD + ENTER + TOUCH)
+        input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                checkPassword();
+            }
+        });
+
+        // MOBILE ENTER BUTTON SUPPORT
+        input.addEventListener("input", function() {
+            if (input.value.length > 0) {
+                input.style.letterSpacing = "1px";
+            }
+        });
+
+        function checkPassword() {
+            const entered = input.value.trim();
+            input.value = "";
+            
+            // TERMINAL FLASH
+            terminal.style.boxShadow = '0 0 200px #00f5ff, inset 0 0 150px rgba(0,245,255,0.3)';
+            
+            setTimeout(() => {
+                terminal.style.boxShadow = '0 0 80px rgba(0,245,255,0.4), inset 0 0 80px rgba(0,245,255,0.08)';
+                
+                if (entered === correctPassword) {
+                    // SUCCESS
+                    output.innerHTML += 
+                        '\n<span class="success">✅ NEURAL AUTHORIZATION COMPLETE - EXECUTIVE ACCESS</span>\n' +
+                        '<span style="color: #0099cc;">[NEURAL]</span> Synaptic pathways aligned...\n' +
+                        '<span style="color: #00f5ff;">[CORE]</span> Transferring to executive interface...\n' +
+                        '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+                    
+                    // NEURAL EXPLOSION
+                    for(let i = 0; i < 40; i++) {
+                        setTimeout(() => createNeuralLine(), i * 30);
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = redirectURL;
+                    }, 3500);
+
+                } else {
+                    // FAILURE
+                    output.innerHTML += 
+                        '\n<span class="error">❌ NEURAL BREACH DETECTED - EXECUTIVE LOCKOUT</span>\n' +
+                        '<span style="color: #ff6b9d;">[SECURITY]</span> Neural trace initiated...\n' +
+                        '<span style="color: #ff6b9d;">[WARNING]</span> Executive signature mismatch - 192.168.' + Math.floor(Math.random()*255) + '\n' +
+                        '┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅';
+                    
+                    terminal.style.borderImage = 'linear-gradient(45deg, #ff6b9d, #cc3366, #ff6b9d) 1';
+                    input.placeholder = "RE-ENTER EXECUTIVE CODE";
+                    input.focus();
+                }
+            }, 600);
+        }
+
+        // RESPONSIVE INIT
+        function initResponsive() {
+            createNeuralLine();
+            // Set proper viewport height for mobile
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        // INIT
+        initResponsive();
+        setInterval(createNeuralLine, 800);
+
+        // RESIZE HANDLER
+        window.addEventListener('resize', initResponsive);
+    </script>
+</body>
+</html>
