@@ -84,7 +84,7 @@ For real-world security, use:
 Murari Singh
 💻 Developer | Linux | Cybersecurity Enthusiast
 
-🔗 GitHub: https://github.com/developer9334-boop
+🔗 GitHub: https://github.com/developer8709-max
 
 ---
 
