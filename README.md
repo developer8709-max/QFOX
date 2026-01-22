@@ -62,7 +62,7 @@ Users who enter the correct password are redirected securely to a target website
 
 🔐 Default Credentials (Demo)
 
-Password: mySecret123
+Password:915512
 
 ---
 
